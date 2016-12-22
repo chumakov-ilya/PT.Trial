@@ -1,7 +1,8 @@
 ﻿using System;
 using EasyNetQ;
+using PT.Trial.Common.Contracts;
 
-namespace PT.Trial.Common
+namespace PT.Trial.Common.Services
 {
     public class BusService : IBusService
     {

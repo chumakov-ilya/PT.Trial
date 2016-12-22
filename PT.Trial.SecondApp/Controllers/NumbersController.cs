@@ -5,6 +5,7 @@ using PT.Trial.Common;
 using System.Web.Http;
 using System.Web.Http.Results;
 using Autofac;
+using PT.Trial.Common.Contracts;
 
 namespace PT.Trial.SecondApp.Controllers
 {

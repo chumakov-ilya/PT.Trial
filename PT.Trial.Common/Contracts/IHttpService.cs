@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace PT.Trial.Common
+namespace PT.Trial.Common.Contracts
 {
     public interface IHttpService
     {

@@ -5,8 +5,9 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using PT.Trial.Common.Contracts;
 
-namespace PT.Trial.Common
+namespace PT.Trial.Common.Services
 {
     public class HttpService : IHttpService
     {

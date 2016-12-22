@@ -1,4 +1,6 @@
 ﻿using Autofac;
+using PT.Trial.Common.Contracts;
+using PT.Trial.Common.Services;
 
 namespace PT.Trial.Common
 {

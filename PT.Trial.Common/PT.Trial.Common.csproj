@@ -65,17 +65,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BusService.cs" />
-    <Compile Include="CalcService.cs" />
+    <Compile Include="Services\BusService.cs" />
+    <Compile Include="Services\CalcService.cs" />
     <Compile Include="Calculation.cs" />
-    <Compile Include="Calculator.cs" />
-    <Compile Include="ConcurrentDictionaryExtentions.cs" />
-    <Compile Include="HttpService.cs" />
-    <Compile Include="IBusService.cs" />
-    <Compile Include="ICalcService.cs" />
-    <Compile Include="IHttpService.cs" />
-    <Compile Include="ILogService.cs" />
-    <Compile Include="LogService.cs" />
+    <Compile Include="Tools\Calculator.cs" />
+    <Compile Include="Tools\ConcurrentDictionaryExtentions.cs" />
+    <Compile Include="Services\HttpService.cs" />
+    <Compile Include="Contracts\IBusService.cs" />
+    <Compile Include="Contracts\ICalcService.cs" />
+    <Compile Include="Contracts\IHttpService.cs" />
+    <Compile Include="Contracts\ILogService.cs" />
+    <Compile Include="Services\LogService.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="Number.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

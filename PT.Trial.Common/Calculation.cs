@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EasyNetQ;
 using NLog;
+using PT.Trial.Common.Contracts;
 
 namespace PT.Trial.Common
 {

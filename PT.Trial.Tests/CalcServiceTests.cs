@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using NUnit.Framework;
 using PT.Trial.Common;
+using PT.Trial.Common.Contracts;
 
 namespace PT.Trial.Tests
 {

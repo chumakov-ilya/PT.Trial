@@ -1,7 +1,9 @@
 ﻿using System.Collections.Concurrent;
 using System.Numerics;
+using PT.Trial.Common.Contracts;
+using PT.Trial.Common.Tools;
 
-namespace PT.Trial.Common
+namespace PT.Trial.Common.Services
 {
     public class CalcService : ICalcService
     {

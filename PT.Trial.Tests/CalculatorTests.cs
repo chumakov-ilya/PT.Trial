@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using PT.Trial.Common;
+using PT.Trial.Common.Tools;
 
 namespace PT.Trial.Tests
 {

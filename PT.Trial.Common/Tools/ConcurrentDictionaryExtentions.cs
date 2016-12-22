@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace PT.Trial.Common
+namespace PT.Trial.Common.Tools
 {
     public static class ConcurrentDictionaryExtentions
     {

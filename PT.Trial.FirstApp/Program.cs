@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Autofac;
 using PT.Trial.Common;
+using PT.Trial.Common.Contracts;
 
 namespace PT.Trial.FirstApp
 {

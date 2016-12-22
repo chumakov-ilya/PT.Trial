@@ -2,8 +2,9 @@
 using NLog;
 using NLog.Config;
 using NLog.Targets;
+using PT.Trial.Common.Contracts;
 
-namespace PT.Trial.Common
+namespace PT.Trial.Common.Services
 {
     public class LogService : ILogService
     {
