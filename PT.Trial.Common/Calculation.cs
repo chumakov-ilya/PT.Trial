@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using NLog;
 
@@ -22,7 +23,9 @@ namespace PT.Trial.Common
 
         public async Task HandleAsync(Number number)
         {
-            if (number.Index >= 50)
+            if (number.Index == 20 && Id == "0") Thread.Sleep(10000);
+
+                if (number.Index >= 50)
             {
                 _logger.Error($"Calculation #{Id}: reached MAX number count. Increase count in app settings if needed.");
                 _logger.Error($"Calculation #{Id}: last received number {number}. Check logs for the full output.");

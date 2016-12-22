@@ -26,7 +26,7 @@ namespace PT.Trial.FirstApp
                     {
                         bus.Subscribe<Number>("test", 
                             async x => await calculation.HandleAsync(x),
-                            x => x.WithTopic(calculation.Id));
+                            x => x.WithTopic("topic" + calculation.Id));
 
                         calculation.SendStartNumber();
                     });
@@ -36,7 +36,7 @@ namespace PT.Trial.FirstApp
 
                 Task.WaitAll(tasks);
 
-                Console.WriteLine($"{count} parallel calculations are runned. Hit <return> to quit.");
+                Console.WriteLine($"{count} parallel calculations are runned. Hit <Enter> to quit.");
 
                 Console.ReadLine();
             }

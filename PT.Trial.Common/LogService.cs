@@ -9,31 +9,33 @@ namespace PT.Trial.Common
     {
         public static string LogsFolder { get; set; } = "Logs";
 
-        public static ILogger CreateLogger(string calculationId)
+        static LogService()
         {
             var config = new LoggingConfiguration();
 
-            AddFileTarget(calculationId, config);
-            AddConsoleTarget(calculationId, config);
+            AddFileTarget("", config);
+            AddConsoleTarget("", config);
 
             LogManager.Configuration = config;
+        }
 
-            var _logger = LogManager.GetLogger(calculationId);
-            _logger.Trace("Logger is initialized");
+        public static ILogger CreateLogger(string calculationId)
+        {
+            var logger = LogManager.GetLogger(calculationId);
+            logger.Trace("Logger is initialized");
 
-            return _logger;
+            return logger;
         }
 
         private static void AddFileTarget(string calculationId, LoggingConfiguration config)
         {
             string start = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
-            var target = new FileTarget();
-            target.Name = calculationId;
-            target.FileName = LogsFolder + $"/{start} - Thread #{calculationId}.log";
-            target.Layout = "${date:format=HH\\:MM\\:ss} ${logger} ${message}";
+            var target = new FileTarget("file");
+            target.FileName = LogsFolder + $"/{start} - Calc #${{logger}}.log";
+            target.Layout = "${date:format=HH\\:MM\\:ss} #${logger} ${message}";
 
-            config.AddTarget(calculationId, target);
+            config.AddTarget(target);
 
             var rule = new LoggingRule("*", LogLevel.Trace, target);
             config.LoggingRules.Add(rule);
@@ -41,10 +43,10 @@ namespace PT.Trial.Common
 
         private static void AddConsoleTarget(string calculationId, LoggingConfiguration config)
         {
-            var target = new ColoredConsoleTarget(calculationId);
+            var target = new ColoredConsoleTarget("cc");
             target.Layout = "${message}";
 
-            config.AddTarget(calculationId, target);
+            config.AddTarget(target);
 
             var rule = new LoggingRule("*", LogLevel.Info, target);
             config.LoggingRules.Add(rule);
