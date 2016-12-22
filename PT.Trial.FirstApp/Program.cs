@@ -14,12 +14,13 @@ namespace PT.Trial.FirstApp
             var container = Root.CreateContainer();
 
             var busService = container.Resolve<IBusService>();
+            var settings = container.Resolve<AppSettings>();
 
             var bus = busService.CreateBus();
 
             try
             {
-                int count = ParseTaskCount(args);
+                int count = ParseCalculationCount(args, settings);
 
                 var tasks = new Task[count];
 
@@ -49,9 +50,10 @@ namespace PT.Trial.FirstApp
             }
         }
 
-        private static int ParseTaskCount(string[] args)
+        private static int ParseCalculationCount(string[] args, AppSettings settings)
         {
-            const int defaultCount = 2;
+            int defaultCount = settings.DefaultCalculationsCount;
+
             if (args == null || args.Length == 0) return defaultCount;
 
             int taskCount;

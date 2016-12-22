@@ -14,8 +14,8 @@ namespace PT.Trial.Common.Services
         {
             var config = new LoggingConfiguration();
 
-            AddFileTarget("", config);
-            AddConsoleTarget("", config);
+            AddFileTarget(config);
+            AddConsoleTarget(config);
 
             LogManager.Configuration = config;
         }
@@ -28,7 +28,7 @@ namespace PT.Trial.Common.Services
             return logger;
         }
 
-        private static void AddFileTarget(string calculationId, LoggingConfiguration config)
+        private static void AddFileTarget(LoggingConfiguration config)
         {
             string start = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
@@ -42,7 +42,7 @@ namespace PT.Trial.Common.Services
             config.LoggingRules.Add(rule);
         }
 
-        private static void AddConsoleTarget(string calculationId, LoggingConfiguration config)
+        private static void AddConsoleTarget(LoggingConfiguration config)
         {
             var target = new ColoredConsoleTarget("cc");
             target.Layout = "${message}";

@@ -7,6 +7,7 @@ namespace PT.Trial.Common.Services
 {
     public class CalcService : ICalcService
     {
+        static CalcService() {}
         public static ConcurrentDictionary<long, Number> Cache { get; } = new ConcurrentDictionary<long, Number>();
 
         public Number GetNextNumber(Number current)

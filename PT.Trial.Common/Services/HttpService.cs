@@ -11,11 +11,20 @@ namespace PT.Trial.Common.Services
 {
     public class HttpService : IHttpService
     {
+        private string _headerName = "pt-calculation-id";
+
+        public AppSettings Settings { get; set; }
+
+        public HttpService(AppSettings settings)
+        {
+            Settings = settings;
+        }
+
         public async Task<bool> SendAsync(Number number, string calculationId)
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("http://localhost:42424");
+                client.BaseAddress = new Uri(Settings.WebConnectionString);
 
                 var request = CreateJsonRequest(number, calculationId, HttpMethod.Post, "/api/numbers/");
 
@@ -31,7 +40,7 @@ namespace PT.Trial.Common.Services
 
             request.Headers.Accept.Clear();
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            request.Headers.Add("pt-calculation-id", calculationId);
+            request.Headers.Add(_headerName, calculationId);
 
             if (body != null)
                 request.Content = new ObjectContent(body.GetType(), body, new JsonMediaTypeFormatter(), new MediaTypeHeaderValue("application/json"));
@@ -45,7 +54,7 @@ namespace PT.Trial.Common.Services
 
             IEnumerable<string> headerValues;
 
-            if (headers.TryGetValues("pt-calculation-id", out headerValues))
+            if (headers.TryGetValues(_headerName, out headerValues))
             {
                 value = headerValues.FirstOrDefault();
             }

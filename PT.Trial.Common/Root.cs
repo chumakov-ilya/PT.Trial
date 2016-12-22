@@ -21,7 +21,9 @@ namespace PT.Trial.Common
             builder.RegisterType<HttpService>().As<IHttpService>().InstancePerDependency();
             builder.RegisterType<LogService>().As<ILogService>().InstancePerDependency();
 
-            builder.RegisterType<Calculation>();
+            builder.RegisterType<Calculation>().InstancePerDependency();
+            builder.RegisterType<AppSettings>().SingleInstance();
+
             return builder;
         }
     }
