@@ -9,8 +9,15 @@ namespace PT.Trial.Common
         {
             using (var bus = RabbitHutch.CreateBus("host=localhost"))
             {
-                bus.Publish(number, "topic" + calculationId);
+                bus.Publish(number, GetTopicId(calculationId));
             }
+        }
+
+        private static string GetTopicId(string calculationId)
+        {
+            if (string.IsNullOrEmpty(calculationId)) throw  new ArgumentNullException(nameof(calculationId));
+
+            return "topic" + calculationId;
         }
 
         public IBus CreateBus()
@@ -22,7 +29,7 @@ namespace PT.Trial.Common
         {
             bus.Subscribe<Number>("test",
                 async x => await calculation.HandleAsync(x),
-                x => x.WithTopic("topic" + calculation.Id));
+                x => x.WithTopic(GetTopicId(calculation.Id)));
         }
     }
 }

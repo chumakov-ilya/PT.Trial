@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using PT.Trial.Common;
 using System.Web.Http;
 using System.Web.Http.Results;
@@ -9,32 +10,26 @@ namespace PT.Trial.SecondApp.Controllers
 {
     public class NumbersController : ApiController
     {
-        public IHttpActionResult Post([FromBody]Number current)
+        public ICalcService CalcService { get; set; }
+        public IBusService BusService { get; set; }
+        public IHttpService HttpService { get; set; }
+
+        public NumbersController(ICalcService calcService, IBusService busService, IHttpService httpService)
         {
-            var CalcService = Root.CreateContainer().Resolve<ICalcService>();
-            var BusService = Root.CreateContainer().Resolve<IBusService>();
-
-            var next = CalcService.GetNextNumber(current);
-
-            string threadId = ReadCalculationId();
-
-            BusService.Publish(next, threadId);
-
-            return Ok();
+            CalcService = calcService;
+            BusService = busService;
+            HttpService = httpService;
         }
 
-        private string ReadCalculationId()
+        public IHttpActionResult Post([FromBody]Number current)
         {
-            string value = null;
+            var next = CalcService.GetNextNumber(current);
 
-            IEnumerable<string> headerValues;
+            string calculationId = HttpService.ReadCalculationId(Request.Headers);
 
-            if (Request.Headers.TryGetValues("pt-calculation-id", out headerValues))
-            {
-                value = headerValues.FirstOrDefault();
-            }
+            BusService.Publish(next, calculationId);
 
-            return value;
+            return Ok();
         }
     }
 }

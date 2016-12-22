@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
@@ -6,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace PT.Trial.Common
 {
-    public  class HttpService : IHttpService
+    public class HttpService : IHttpService
     {
-        public  async Task<bool> SendAsync(Number number, string calculationId)
+        public async Task<bool> SendAsync(Number number, string calculationId)
         {
             using (var client = new HttpClient())
             {
@@ -22,7 +24,7 @@ namespace PT.Trial.Common
             }
         }
 
-        private  HttpRequestMessage CreateJsonRequest(object body, string calculationId, HttpMethod method, string resource)
+        private HttpRequestMessage CreateJsonRequest(object body, string calculationId, HttpMethod method, string resource)
         {
             HttpRequestMessage request = new HttpRequestMessage(method, resource);
 
@@ -34,6 +36,20 @@ namespace PT.Trial.Common
                 request.Content = new ObjectContent(body.GetType(), body, new JsonMediaTypeFormatter(), new MediaTypeHeaderValue("application/json"));
 
             return request;
+        }
+
+        public string ReadCalculationId(HttpRequestHeaders headers)
+        {
+            string value = null;
+
+            IEnumerable<string> headerValues;
+
+            if (headers.TryGetValues("pt-calculation-id", out headerValues))
+            {
+                value = headerValues.FirstOrDefault();
+            }
+
+            return value;
         }
     }
 }
