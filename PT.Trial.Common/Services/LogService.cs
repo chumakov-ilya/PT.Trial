@@ -8,7 +8,7 @@ namespace PT.Trial.Common.Services
 {
     public class LogService : ILogService
     {
-        public static string LogsFolder { get; set; } = "Logs";
+        public static string LogsFolder { get; } = "Logs";
 
         static LogService()
         {

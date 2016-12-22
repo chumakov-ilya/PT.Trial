@@ -13,7 +13,7 @@ namespace PT.Trial.Common.Services
     {
         private string _headerName = "pt-calculation-id";
 
-        public AppSettings Settings { get; set; }
+        public AppSettings Settings { get; }
 
         public HttpService(AppSettings settings)
         {

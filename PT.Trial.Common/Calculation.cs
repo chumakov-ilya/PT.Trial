@@ -11,13 +11,13 @@ namespace PT.Trial.Common
     {
         private ILogger _logger;
 
-        public string Id { get; set; }
+        public string Id { get;  }
 
-        public IBusService BusService { get; set; }
-        public ICalcService CalcService { get; set; }
-        public ILogService LogService { get; set; }
-        public IHttpService HttpService { get; set; }
-        public AppSettings Settings { get; set; }
+        public IBusService BusService { get; }
+        public ICalcService CalcService { get; }
+        public ILogService LogService { get; }
+        public IHttpService HttpService { get; }
+        public AppSettings Settings { get; }
 
         public Calculation(
             string id, 
@@ -40,14 +40,14 @@ namespace PT.Trial.Common
 
         public void SubscribeTo(IBus bus)
         {
-            BusService.Subscribe(bus, this, async x => await HandleAsync(x));
+            BusService.Receive(bus, this, async x => await HandleAsync(x));
         }
 
         public async Task HandleAsync(Number number)
         {
             if (number.Index >= Settings.MaxNumberCount)
             {
-                _logger.Error($"Calculation #{Id}: reached MAX number count. Increase count in app settings if needed.");
+                _logger.Error($"Calculation #{Id}: reached MAX number count {Settings.MaxNumberCount}. Increase count in app settings if you are REALLY SURE.");
                 _logger.Error($"Calculation #{Id}: last received number {number}. Check logs for the full output.");
                 _logger.Error("");
                 return;

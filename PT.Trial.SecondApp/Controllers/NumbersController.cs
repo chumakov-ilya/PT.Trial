@@ -28,7 +28,7 @@ namespace PT.Trial.SecondApp.Controllers
 
             string calculationId = HttpService.ReadCalculationId(Request.Headers);
 
-            BusService.Publish(next, calculationId);
+            BusService.Send(next, calculationId);
 
             return Ok();
         }

@@ -21,6 +21,8 @@ namespace PT.Trial.FirstApp
 
             try
             {
+                Console.WriteLine($"Starting {count} parallel calculations... Hit <Enter> to quit.");
+
                 var tasks = new Task[count];
 
                 for (int index = 0; index < count; index++)
@@ -39,8 +41,6 @@ namespace PT.Trial.FirstApp
 
                 Task.WaitAll(tasks);
 
-                Console.WriteLine($"{count} parallel calculations are runned. Hit <Enter> to quit.");
-
                 Console.ReadLine();
             }
             finally
@@ -51,15 +51,26 @@ namespace PT.Trial.FirstApp
 
         private static int ParseCalculationCount()
         {
-            Console.Write("Enter count of parallel calculations = ");
-            string input = Console.ReadLine();
+            bool isParsed = false;
 
-            int count;
-            bool isParsed = int.TryParse(input, out count);
+            while (!isParsed)
+            {
+                Console.Write("Enter count of parallel calculations = ");
+                string input = Console.ReadLine();
 
-            if (!isParsed) throw new ArgumentException("wrong input");
+                int count;
+                isParsed = int.TryParse(input, out count);
 
-            return count;
+                if (isParsed)
+                {
+                    return count;
+                }
+                else
+                {
+                    Console.WriteLine("Wrong input. Try again.");
+                }
+            }
+            return 0;
         }
 
     }
