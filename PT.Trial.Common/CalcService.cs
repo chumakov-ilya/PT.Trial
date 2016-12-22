@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Numerics;
 
 namespace PT.Trial.Common
 {
@@ -10,7 +11,9 @@ namespace PT.Trial.Common
         {
             Number prev = GetPrevNumber(current);
 
-            var next = new Number(current.Index + 1, prev.Value + current.Value);
+            string sum = (BigInteger.Parse(prev.Value) + BigInteger.Parse(current.Value)).ToString();
+
+            var next = new Number(current.Index + 1, sum);
 
             Cache.TryAdd(next);
 

@@ -10,22 +10,17 @@ namespace PT.Trial.Tests
 {
     public class CalculatorTests
     {
-        [TestCase(0, ExpectedResult = 0)]
-        [TestCase(1, ExpectedResult = 1)]
-        [TestCase(2, ExpectedResult = 1)]
-        [TestCase(3, ExpectedResult = 2)]
-        [TestCase(4, ExpectedResult = 3)]
-        [TestCase(5, ExpectedResult = 5)]
-        [TestCase(92, ExpectedResult = 7540113804746346429)]
-        public long GetValueByIndex_SupportedIndex_ReturnsCorrectValue(long index)
+        [TestCase(0, ExpectedResult = "0")]
+        [TestCase(1, ExpectedResult = "1")]
+        [TestCase(2, ExpectedResult = "1")]
+        [TestCase(3, ExpectedResult = "2")]
+        [TestCase(4, ExpectedResult = "3")]
+        [TestCase(5, ExpectedResult = "5")]
+        [TestCase(200, ExpectedResult = "280571172992510140037611932413038677189525")]
+        [TestCase(500, ExpectedResult = "139423224561697880139724382870407283950070256587697307264108962948325571622863290691557658876222521294125")]
+        public string GetValueByIndex_SupportedIndex_ReturnsCorrectValue(long index)
         {
-            return Calculator.GetValueByIndex(index);
-        }
-
-        [TestCase(93)]
-        public void GetValueByIndex_TooLong_OverflowException(long index)
-        {
-            Assert.Throws<OverflowException>(() => Calculator.GetValueByIndex(index));
+            return Calculator.GetValueByIndex(index).ToString();
         }
     }
 }

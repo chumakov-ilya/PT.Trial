@@ -16,7 +16,7 @@ namespace PT.Trial.Tests
 
             var deserialized = JsonConvert.DeserializeObject<Number>(serialized);
 
-            Assert.AreEqual(long.MaxValue, deserialized.Value);
+            Assert.AreEqual(long.MaxValue.ToString(), deserialized.Value);
         }
 
         [Test]
@@ -30,7 +30,7 @@ namespace PT.Trial.Tests
 
             var deserialized = JsonConvert.DeserializeObject<Message<Number>>(serialized);
 
-            Assert.AreEqual(long.MaxValue, deserialized.Payload.Value);
+            Assert.AreEqual(long.MaxValue.ToString(), deserialized.Payload.Value);
         }
 
         [Test]
