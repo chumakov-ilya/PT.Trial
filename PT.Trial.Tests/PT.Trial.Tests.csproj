@@ -55,7 +55,6 @@
   <ItemGroup>
     <Compile Include="CalcServiceTests.cs" />
     <Compile Include="CalculatorTests.cs" />
-    <Compile Include="JsonTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
