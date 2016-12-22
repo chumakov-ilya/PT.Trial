@@ -18,26 +18,5 @@ namespace PT.Trial.Tests
 
             Assert.AreEqual(long.MaxValue.ToString(), deserialized.Value);
         }
-
-        [Test]
-        public void Serialization_Message_Correct()
-        {
-            var x = new Number(0, long.MaxValue);
-
-            var message = new Message<Number>(x, 1);
-
-            string serialized = JsonConvert.SerializeObject(message);
-
-            var deserialized = JsonConvert.DeserializeObject<Message<Number>>(serialized);
-
-            Assert.AreEqual(long.MaxValue.ToString(), deserialized.Payload.Value);
-        }
-
-        [Test]
-        public void MyMethod()
-        {
-            Console.WriteLine(DateTime.Now.ToString("o"));
-            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-        }
     }
 }

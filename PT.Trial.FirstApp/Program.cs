@@ -11,17 +11,16 @@ namespace PT.Trial.FirstApp
     {
         static void Main(string[] args)
         {
+            int count = ParseCalculationCount();
+
             var container = Root.CreateContainer();
 
             var busService = container.Resolve<IBusService>();
-            var settings = container.Resolve<AppSettings>();
 
             var bus = busService.CreateBus();
 
             try
             {
-                int count = ParseCalculationCount(args, settings);
-
                 var tasks = new Task[count];
 
                 for (int index = 0; index < count; index++)
@@ -50,18 +49,17 @@ namespace PT.Trial.FirstApp
             }
         }
 
-        private static int ParseCalculationCount(string[] args, AppSettings settings)
+        private static int ParseCalculationCount()
         {
-            int defaultCount = settings.DefaultCalculationsCount;
+            Console.Write("Enter count of parallel calculations = ");
+            string input = Console.ReadLine();
 
-            if (args == null || args.Length == 0) return defaultCount;
+            int count;
+            bool isParsed = int.TryParse(input, out count);
 
-            int taskCount;
-            bool isParsed = int.TryParse(args[1], out taskCount);
+            if (!isParsed) throw new ArgumentException("wrong input");
 
-            if (!isParsed) return defaultCount;
-
-            return taskCount;
+            return count;
         }
 
     }
