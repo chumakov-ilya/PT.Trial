@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using EasyNetQ;
 using PT.Trial.Common;
@@ -9,26 +10,45 @@ namespace PT.Trial.FirstApp
     {
         static void Main(string[] args)
         {
-            int count = ParseTaskCount(args);
+            var bus = RabbitHutch.CreateBus("host=localhost");
 
-            Console.WriteLine($"Task count: {count}");
-
-            using (var bus = RabbitHutch.CreateBus("host=localhost"))
+            try
             {
-                string threadId = "1";
+                int count = ParseTaskCount(args);
 
-                bus.Subscribe<Number>("test", async x => await HandleNumber(x, threadId), x => x.WithTopic(threadId));
+                var tasks = new Task[count];
 
-                SendNumber(new Number(1, 1), threadId).Wait();
+                for (int index = 0; index < count; index++)
+                {
+                    string calculationId = index.ToString();
 
-                Console.WriteLine("Listening for messages. Hit <return> to quit.");
+                    var task = Task.Factory.StartNew(() =>
+                    {
+                        bus.Subscribe<Number>("test", 
+                            async x => await HandleNumber(x, calculationId),
+                            x => x.WithTopic(calculationId));
+
+                        SendNumber(new Number(1, 1), calculationId).Wait();
+                    });
+
+                    tasks[index] = task;
+                }
+
+                Task.WaitAll(tasks);
+
+                Console.WriteLine($"{count} parallel calculations are runned. Hit <return> to quit.");
+
                 Console.ReadLine();
+            }
+            finally
+            {
+                bus.Dispose();
             }
         }
 
         private static int ParseTaskCount(string[] args)
         {
-            const int defaultCount = 1;
+            const int defaultCount = 2;
             if (args == null || args.Length == 0) return defaultCount;
 
             int taskCount;
@@ -39,24 +59,36 @@ namespace PT.Trial.FirstApp
             return taskCount;
         }
 
-        static async Task HandleNumber(Number number, string threadId)
+        static async Task HandleNumber(Number number, string calculationId)
         {
-            if (number.Index >= 50) return;
+            if (number.Index >= 50)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"Calculation #{calculationId}: reached MAX number count. Increase count in app settings if needed.");
+                Console.WriteLine($"Calculation #{calculationId}: last received number {number}. Check logs for the full output.");
+                Console.WriteLine();
+                Console.ResetColor();
 
-            Console.ForegroundColor = ConsoleColor.Green;
+                return;
+            }
+
             Console.WriteLine($"Received: {number}");
-            Console.ResetColor();
 
             var next = CalcService.GetNextNumber(number);
 
-            await SendNumber(next, threadId);
+            await SendNumber(next, calculationId);
         }
 
-        private static async Task SendNumber(Number number, string threadId)
+        private static async Task SendNumber(Number number, string calculationId)
         {
-            Console.WriteLine($"Sending: {number}");
+            string message = $"Sending: {number}";
+            Console.WriteLine(message);
 
-            await HttpService.SendAsync(number, threadId);
+            var logger = LogService.CreateLogger(calculationId);
+
+            logger.Info(message);
+
+            await HttpService.SendAsync(number, calculationId);
         }
     }
 }

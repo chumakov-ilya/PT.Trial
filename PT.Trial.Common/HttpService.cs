@@ -8,13 +8,13 @@ namespace PT.Trial.Common
 {
     public static class HttpService
     {
-        public static async Task<bool> SendAsync(Number number, string threadId)
+        public static async Task<bool> SendAsync(Number number, string calculationId)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri("http://localhost:42424");
 
-                var request = CreateJsonRequest(number, threadId, HttpMethod.Post, "/api/numbers/");
+                var request = CreateJsonRequest(number, calculationId, HttpMethod.Post, "/api/numbers/");
 
                 var response = await client.SendAsync(request);
 
@@ -22,13 +22,13 @@ namespace PT.Trial.Common
             }
         }
 
-        private static HttpRequestMessage CreateJsonRequest(object body, string threadId, HttpMethod method, string resource)
+        private static HttpRequestMessage CreateJsonRequest(object body, string calculationId, HttpMethod method, string resource)
         {
             HttpRequestMessage request = new HttpRequestMessage(method, resource);
 
             request.Headers.Accept.Clear();
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            request.Headers.Add("pt-thread-id", threadId);
+            request.Headers.Add("pt-calculation-id", calculationId);
 
             if (body != null)
                 request.Content = new ObjectContent(body.GetType(), body, new JsonMediaTypeFormatter(), new MediaTypeHeaderValue("application/json"));

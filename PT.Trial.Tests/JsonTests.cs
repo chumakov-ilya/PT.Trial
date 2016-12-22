@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using PT.Trial.Common;
 
@@ -30,6 +31,13 @@ namespace PT.Trial.Tests
             var deserialized = JsonConvert.DeserializeObject<Message<Number>>(serialized);
 
             Assert.AreEqual(long.MaxValue, deserialized.Payload.Value);
+        }
+
+        [Test]
+        public void MyMethod()
+        {
+            Console.WriteLine(DateTime.Now.ToString("o"));
+            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
         }
     }
 }

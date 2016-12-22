@@ -5,11 +5,11 @@ namespace PT.Trial.Common
 {
     public static class BusService
     {
-        public static void Publish(Number number, string threadId)
+        public static void Publish(Number number, string calculationId)
         {
             using (var bus = RabbitHutch.CreateBus("host=localhost"))
             {
-                bus.Publish(number, threadId);
+                bus.Publish(number, calculationId);
             }
         }
 

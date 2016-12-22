@@ -12,20 +12,20 @@ namespace PT.Trial.SecondApp.Controllers
         {
             var next = CalcService.GetNextNumber(current);
 
-            string threadId = ReadThreadId();
+            string threadId = ReadCalculationId();
 
             BusService.Publish(next, threadId);
 
             return Ok();
         }
 
-        private string ReadThreadId()
+        private string ReadCalculationId()
         {
             string value = null;
 
             IEnumerable<string> headerValues;
 
-            if (Request.Headers.TryGetValues("pt-thread-id", out headerValues))
+            if (Request.Headers.TryGetValues("pt-calculation-id", out headerValues))
             {
                 value = headerValues.FirstOrDefault();
             }
