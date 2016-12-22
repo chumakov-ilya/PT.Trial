@@ -3,11 +3,11 @@ using System.Numerics;
 
 namespace PT.Trial.Common
 {
-    public static class CalcService
+    public class CalcService : ICalcService
     {
         public static ConcurrentDictionary<long, Number> Cache { get; } = new ConcurrentDictionary<long, Number>();
 
-        public static Number GetNextNumber(Number current)
+        public Number GetNextNumber(Number current)
         {
             Number prev = GetPrevNumber(current);
 
@@ -20,7 +20,7 @@ namespace PT.Trial.Common
             return next;
         }
 
-        public static Number GetPrevNumber(Number current)
+        public Number GetPrevNumber(Number current)
         {
             long prevIndex = current.Index - 1;
 

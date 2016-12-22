@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using EasyNetQ;
+using Autofac;
 using PT.Trial.Common;
 
 namespace PT.Trial.FirstApp
@@ -10,7 +10,11 @@ namespace PT.Trial.FirstApp
     {
         static void Main(string[] args)
         {
-            var bus = BusService.CreateBus();
+            var container = Root.CreateContainer();
+
+            var busService = container.Resolve<IBusService>();
+
+            var bus = busService.CreateBus();
 
             try
             {
@@ -20,7 +24,7 @@ namespace PT.Trial.FirstApp
 
                 for (int index = 0; index < count; index++)
                 {
-                    var calculation = new Calculation(index.ToString());
+                    var calculation = container.Resolve<Calculation>(new NamedParameter("id", index.ToString()));
 
                     var task = Task.Factory.StartNew(() =>
                     {

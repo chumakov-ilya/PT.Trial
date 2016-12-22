@@ -3,9 +3,9 @@ using EasyNetQ;
 
 namespace PT.Trial.Common
 {
-    public static class BusService
+    public class BusService : IBusService
     {
-        public static void Publish(Number number, string calculationId)
+        public void Publish(Number number, string calculationId)
         {
             using (var bus = RabbitHutch.CreateBus("host=localhost"))
             {
@@ -13,12 +13,12 @@ namespace PT.Trial.Common
             }
         }
 
-        public static IBus CreateBus()
+        public IBus CreateBus()
         {
             return RabbitHutch.CreateBus("host=localhost");
         }
 
-        public static void Subscribe(IBus bus, Calculation calculation, Action<Number> onMessage)
+        public void Subscribe(IBus bus, Calculation calculation, Action<Number> onMessage)
         {
             bus.Subscribe<Number>("test",
                 async x => await calculation.HandleAsync(x),

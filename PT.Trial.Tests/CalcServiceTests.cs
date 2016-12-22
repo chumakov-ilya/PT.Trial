@@ -1,10 +1,19 @@
-﻿using NUnit.Framework;
+﻿using Autofac;
+using NUnit.Framework;
 using PT.Trial.Common;
 
 namespace PT.Trial.Tests
 {
     public class CalcServiceTests
     {
+        [SetUp]
+        public void SetUp()
+        {
+            CalcService = Root.CreateContainer().Resolve<ICalcService>();
+        }
+
+        public ICalcService CalcService { get; set; }
+
         [TestCase(1, "1", "0")]
         [TestCase(2, "1", "1")]
         [TestCase(3, "2", "1")]

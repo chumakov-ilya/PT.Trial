@@ -9,12 +9,30 @@ namespace PT.Trial.Common
     public class Calculation
     {
         private ILogger _logger;
+
         public string Id { get; set; }
+
+        public IBusService BusService { get; set; }
+        public ICalcService CalcService { get; set; }
+        public ILogService LogService { get; set; }
+        public IHttpService HttpService { get; set; }
+
+        public Calculation(string id, IBusService busService, ICalcService calcService, ILogService logService, IHttpService httpService)
+        {
+            Id = id;
+
+            BusService = busService;
+            CalcService = calcService;
+            LogService = logService;
+            HttpService = httpService;
+
+            _logger = LogService.CreateLogger(Id);
+        }
 
         public Calculation(string id)
         {
             Id = id;
-            _logger = LogService.CreateLogger(Id);
+
         }
 
         public void SubscribeTo(IBus bus)

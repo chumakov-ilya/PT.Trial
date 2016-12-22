@@ -33,6 +33,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.2.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.2.1\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EasyNetQ, Version=0.63.5.454, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EasyNetQ.0.63.5.454\lib\net45\EasyNetQ.dll</HintPath>
       <Private>True</Private>

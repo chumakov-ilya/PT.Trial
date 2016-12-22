@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace PT.Trial.Common
 {
-    public static class HttpService
+    public  class HttpService : IHttpService
     {
-        public static async Task<bool> SendAsync(Number number, string calculationId)
+        public  async Task<bool> SendAsync(Number number, string calculationId)
         {
             using (var client = new HttpClient())
             {
@@ -22,7 +22,7 @@ namespace PT.Trial.Common
             }
         }
 
-        private static HttpRequestMessage CreateJsonRequest(object body, string calculationId, HttpMethod method, string resource)
+        private  HttpRequestMessage CreateJsonRequest(object body, string calculationId, HttpMethod method, string resource)
         {
             HttpRequestMessage request = new HttpRequestMessage(method, resource);
 

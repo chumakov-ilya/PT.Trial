@@ -5,7 +5,7 @@ using NLog.Targets;
 
 namespace PT.Trial.Common
 {
-    public class LogService
+    public class LogService : ILogService
     {
         public static string LogsFolder { get; set; } = "Logs";
 
@@ -19,7 +19,7 @@ namespace PT.Trial.Common
             LogManager.Configuration = config;
         }
 
-        public static ILogger CreateLogger(string calculationId)
+        public ILogger CreateLogger(string calculationId)
         {
             var logger = LogManager.GetLogger(calculationId);
             logger.Trace("Logger is initialized");
