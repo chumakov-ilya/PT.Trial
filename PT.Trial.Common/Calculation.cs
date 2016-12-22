@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using EasyNetQ;
@@ -47,7 +49,7 @@ namespace PT.Trial.Common
         {
             if (number.Index >= Settings.MaxNumberCount)
             {
-                _logger.Error($"Calculation #{Id}: reached MAX number count {Settings.MaxNumberCount}. Increase count in app settings if you are REALLY SURE.");
+                _logger.Error($"Calculation #{Id}: reached MAX number count ({Settings.MaxNumberCount}). Increase count in app settings if you are REALLY SURE.");
                 _logger.Error($"Calculation #{Id}: last received number {number}. Check logs for the full output.");
                 _logger.Error("");
                 return;
@@ -67,9 +69,16 @@ namespace PT.Trial.Common
 
         public async Task SendAsync(Number number)
         {
-            _logger.Trace($"Sending: {number}");
+            try
+            {
+                _logger.Trace($"Sending: {number}");
 
-            await HttpService.SendAsync(number, Id);
+                await HttpService.SendAsync(number, Id);
+            }
+            catch (HttpRequestException)
+            {
+                _logger.Fatal($"No connection with second (REST) app  {Settings.WebConnectionString}");
+            }
         }
     }
 }
