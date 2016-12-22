@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using EasyNetQ;
 using NLog;
 
 namespace PT.Trial.Common
@@ -16,9 +17,9 @@ namespace PT.Trial.Common
             _logger = LogService.CreateLogger(Id);
         }
 
-        public void SendStartNumber()
+        public void SubscribeTo(IBus bus)
         {
-            SendAsync(new Number(1, 1)).Wait();
+            BusService.Subscribe(bus, this, async x => await HandleAsync(x));
         }
 
         public async Task HandleAsync(Number number)
@@ -38,6 +39,11 @@ namespace PT.Trial.Common
             var next = CalcService.GetNextNumber(number);
 
             await SendAsync(next);
+        }
+
+        public void SendStartNumber()
+        {
+            SendAsync(new Number(1, 1)).Wait();
         }
 
         public async Task SendAsync(Number number)

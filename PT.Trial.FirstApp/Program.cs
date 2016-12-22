@@ -10,7 +10,7 @@ namespace PT.Trial.FirstApp
     {
         static void Main(string[] args)
         {
-            var bus = RabbitHutch.CreateBus("host=localhost");
+            var bus = BusService.CreateBus();
 
             try
             {
@@ -24,9 +24,7 @@ namespace PT.Trial.FirstApp
 
                     var task = Task.Factory.StartNew(() =>
                     {
-                        bus.Subscribe<Number>("test", 
-                            async x => await calculation.HandleAsync(x),
-                            x => x.WithTopic("topic" + calculation.Id));
+                        calculation.SubscribeTo(bus);
 
                         calculation.SendStartNumber();
                     });

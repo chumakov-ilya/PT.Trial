@@ -13,12 +13,16 @@ namespace PT.Trial.Common
             }
         }
 
-        public static void Subscribe(Number number, Action<Number> onMessage)
+        public static IBus CreateBus()
         {
-            using (var bus = RabbitHutch.CreateBus("host=localhost"))
-            {
-                bus.Subscribe<Number>("test", onMessage);
-            }
+            return RabbitHutch.CreateBus("host=localhost");
+        }
+
+        public static void Subscribe(IBus bus, Calculation calculation, Action<Number> onMessage)
+        {
+            bus.Subscribe<Number>("test",
+                async x => await calculation.HandleAsync(x),
+                x => x.WithTopic("topic" + calculation.Id));
         }
     }
 }
