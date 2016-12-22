@@ -20,15 +20,15 @@ namespace PT.Trial.FirstApp
 
                 for (int index = 0; index < count; index++)
                 {
-                    string calculationId = index.ToString();
+                    var calculation = new Calculation(index.ToString());
 
                     var task = Task.Factory.StartNew(() =>
                     {
                         bus.Subscribe<Number>("test", 
-                            async x => await HandleNumber(x, calculationId),
-                            x => x.WithTopic(calculationId));
+                            async x => await calculation.HandleAsync(x),
+                            x => x.WithTopic(calculation.Id));
 
-                        SendNumber(new Number(1, 1), calculationId).Wait();
+                        calculation.SendStartNumber();
                     });
 
                     tasks[index] = task;
@@ -59,36 +59,5 @@ namespace PT.Trial.FirstApp
             return taskCount;
         }
 
-        static async Task HandleNumber(Number number, string calculationId)
-        {
-            if (number.Index >= 50)
-            {
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"Calculation #{calculationId}: reached MAX number count. Increase count in app settings if needed.");
-                Console.WriteLine($"Calculation #{calculationId}: last received number {number}. Check logs for the full output.");
-                Console.WriteLine();
-                Console.ResetColor();
-
-                return;
-            }
-
-            Console.WriteLine($"Received: {number}");
-
-            var next = CalcService.GetNextNumber(number);
-
-            await SendNumber(next, calculationId);
-        }
-
-        private static async Task SendNumber(Number number, string calculationId)
-        {
-            string message = $"Sending: {number}";
-            Console.WriteLine(message);
-
-            var logger = LogService.CreateLogger(calculationId);
-
-            logger.Info(message);
-
-            await HttpService.SendAsync(number, calculationId);
-        }
     }
 }

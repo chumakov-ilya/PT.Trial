@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="BusService.cs" />
     <Compile Include="CalcService.cs" />
+    <Compile Include="Calculation.cs" />
     <Compile Include="Calculator.cs" />
     <Compile Include="ConcurrentDictionaryExtentions.cs" />
     <Compile Include="HttpService.cs" />
