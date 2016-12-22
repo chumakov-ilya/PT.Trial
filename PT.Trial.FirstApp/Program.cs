@@ -15,9 +15,11 @@ namespace PT.Trial.FirstApp
 
             using (var bus = RabbitHutch.CreateBus("host=localhost"))
             {
-                bus.Subscribe<Number>("test", async x => await HandleNumber(x), x => x.WithTopic("1"));
+                string threadId = "1";
 
-                SendNumber(new Number(1, 1)).Wait();
+                bus.Subscribe<Number>("test", async x => await HandleNumber(x, threadId), x => x.WithTopic(threadId));
+
+                SendNumber(new Number(1, 1), threadId).Wait();
 
                 Console.WriteLine("Listening for messages. Hit <return> to quit.");
                 Console.ReadLine();
@@ -37,7 +39,7 @@ namespace PT.Trial.FirstApp
             return taskCount;
         }
 
-        static async Task HandleNumber(Number number)
+        static async Task HandleNumber(Number number, string threadId)
         {
             if (number.Index >= 50) return;
 
@@ -47,14 +49,14 @@ namespace PT.Trial.FirstApp
 
             var next = CalcService.GetNextNumber(number);
 
-            await SendNumber(next);
+            await SendNumber(next, threadId);
         }
 
-        private static async Task SendNumber(Number number)
+        private static async Task SendNumber(Number number, string threadId)
         {
             Console.WriteLine($"Sending: {number}");
 
-            await HttpService.Send(number);
+            await HttpService.SendAsync(number, threadId);
         }
     }
 }

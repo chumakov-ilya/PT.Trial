@@ -9,7 +9,7 @@ namespace PT.Trial.Common
         {
             using (var bus = RabbitHutch.CreateBus("host=localhost"))
             {
-                bus.Publish(number);
+                bus.Publish(number, threadId);
             }
         }
 

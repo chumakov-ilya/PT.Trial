@@ -14,7 +14,7 @@ namespace PT.Trial.SecondApp.Controllers
 
             string threadId = ReadThreadId();
 
-            BusService.Publish(next, null);
+            BusService.Publish(next, threadId);
 
             return Ok();
         }
